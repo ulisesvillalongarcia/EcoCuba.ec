@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoCuba - Centro de Ecografías</title>
+  <meta name="description" content="EcoCuba - Precisión que cuida de ti. Agendamiento de ecografías obstétricas, ginecológicas, abdominales, musculoesqueléticas y más.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* === GENERAL STYLES === */
+    :root {
+      --blue-dark: #0b3b61;
+      --blue: #1e90ff;
+      --turquoise: #2ec4b6;
+      --green: #2b8a6b;
+      --muted: #6b7280;
+      --card-bg: #ffffff;
+      --light-bg: #f8faff;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f0fbff 0, #eefdfa 50%, #f7fff8 100%);
+      color: #072032;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    h1, h2, h3, h4 {
+      color: var(--blue-dark);
+      margin-top: 0;
+    }
+    section {
+      padding: 3rem 0;
+    }
+
+    /* === HEADER === */
+    .header {
+      background-color: var(--card-bg);
+      padding: 1rem 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo img {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(11, 59, 97, 0.1);
+    }
+    .brand-text h1 {
+      font-size: 1.25rem;
+      margin: 0;
+      font-weight: 700;
+    }
+    .brand-text .slogan {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .nav-menu a {
+      color: var(--blue-dark);
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 1.5rem;
+      transition: color 0.3s ease;
+    }
+    .nav-menu a:hover {
+      color: var(--blue);
+    }
+    .nav-toggle { display: none; } /* Ocultar en desktop */
+
+    /* === HERO SECTION === */
+    .hero {
+      background: var(--light-bg);
+      border-radius: 14px;
+      padding: 2rem;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap-reverse;
+      box-shadow: 0 8px 28px rgba(5, 20, 30, 0.08);
+      border-top: 8px solid var(--blue-dark);
+    }
+    .hero-text {
+      flex: 1;
+      min-width: 300px;
+    }
+    .hero-text h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .hero-image {
+      flex: 1;
+      text-align: center;
+    }
+    .hero-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(6, 30, 45, 0.06);
+    }
+
+    /* === SERVICES SECTION === */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .service-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-left: 5px solid var(--turquoise);
+    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .service-card h4 {
+      margin-bottom: 0.5rem;
+    }
+    .service-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* === BOOKING SECTION === */
+    .booking {
+      background: var(--light-bg);
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      max-width: 700px;
+      margin: 2rem auto;
+    }
+    .booking h3 {
+      text-align: center;
+      font-size: 1.75rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--blue-dark);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e6eef2;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .form-row {
+      display: flex;
+      gap: 1rem;
+    }
+    .form-row .col {
+      flex: 1;
+    }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn-primary {
+      background: var(--blue-dark);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--blue);
+    }
+    .btn-light {
+      background: transparent;
+      color: var(--blue-dark);
+      border: 2px solid var(--blue-dark);
+    }
+    .btn-light:hover {
+      background: var(--blue-dark);
+      color: white;
+    }
+    .form-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    /* === GALLERY & CONTACT === */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .gallery-grid img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-info p {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+      color: var(--muted);
+    }
+    .map-container {
+      width: 100%;
+      height: 300px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e6eef2;
+      margin-top: 1rem;
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* === WHATSAPP BUTTON & FOOTER === */
+    .whatsapp-btn {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      background: linear-gradient(180deg, var(--turquoise), var(--green));
+      color: white;
+      padding: 0.8rem 1.2rem;
+      border-radius: 50px;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      box-shadow: 0 8px 24px rgba(46, 196, 182, 0.28);
+      text-decoration: none;
+      font-weight: 700;
+      z-index: 9999;
+      transition: transform 0.3s ease;
+    }
+    .whatsapp-btn:hover {
+      transform: scale(1.05);
+    }
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 1px solid #eef6f6;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 2rem;
+    }
+
+    /* === MOBILE STYLES === */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      .nav-menu {
+        display: none; /* Ocultar menú en móviles */
+      }
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+      .hero-image {
+        order: -1;
+      }
+      .form-row {
+        flex-direction: column;
+      }
+      .form-footer {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-content">
+      <div class="brand">
+        <div class="logo">
+          <img src="WhatsApp Image 2025-09-24 at 5.04.10 PM.jpeg" alt="EcoCuba logo">
+        </div>
+        <div class="brand-text">
+          <h1>EcoCuba</h1>
+          <p class="slogan">Precisión que cuida de ti</p>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <a href="#services">Servicios</a>
+        <a href="#booking">Agendar cita</a>
+        <a href="#gallery">Galería</a>
+        <a href="#contact">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container hero" id="home">
+      <div class="hero-text">
+        <h2>Servicio de Ecografías Profesionales</h2>
+        <p class="muted">En EcoCuba, combinamos tecnología avanzada con atención humana para brindarte resultados precisos y confiables. Nuestro equipo de especialistas está aquí para cuidar de ti y de los tuyos.</p>
+      </div>
+      <div class="hero-image">
+        <img src="WhatsApp Image 2025-09-24 at 5.04.11 PM (2).jpeg" alt="Especialista realizando una ecografía">
+      </div>
+    </section>
+
+    <section class="container" id="services">
+      <h2 style="text-align:center;">Nuestros Servicios</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <h4>Ecografía Obstétrica</h4>
+          <p>Monitoreo completo del desarrollo fetal durante el embarazo.</p>
+        </div>
+        <div class="service-card">
+          <h4>Ecografía Ginecológica</h4>
+          <p>Análisis de útero, ovarios y órganos pélvicos.</p>
+        </div>
+        <div class="service-card">
+          <h4>Ecografía Abdominal</h4>
+          <p>Evaluación de órganos internos como hígado, riñones y páncreas.</p>
+        </div>
+        <div class="service-card">
+          <h4>Ecografía Musculoesquelética</h4>
+          <p>Diagnóstico de lesiones en músculos, tendones y articulaciones.</p>
+        </div>
+        <div class="service-card">
+          <h4>Ecografía de Tiroides</h4>
+          <p>Visualización de la glándula tiroides para detectar nódulos o quistes.</p>
+        </div>
+        <div class="service-card">
+          <h4>Ecografía Mamaria</h4>
+          <p>Evaluación del tejido mamario y detección temprana de anomalías.</p>
+        </div>
+        <div class="service-card">
+          <h4>Ecografía Renal</h4>
+          <p>Valoración del estado de los riñones y la presencia de cálculos.</p>
+        </div>
+        <div class="service-card">
+          <h4>Ecografía Testicular</h4>
+          <p>Determinación de tumores, quistes o varicocele.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" id="booking">
+      <div class="booking">
+        <h3>Agenda tu Cita</h3>
+        <form id="bookingForm" autocomplete="off">
+          <div class="form-group">
+            <label for="name">Nombre completo</label>
+            <input id="name" name="name" type="text" required>
+          </div>
+          <div class="form-row">
+            <div class="col form-group">
+              <label for="phone">Teléfono / WhatsApp</label>
+              <input id="phone" name="phone" type="tel" required>
+            </div>
+            <div class="col form-group">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="service">Servicio</label>
+            <select id="service" name="service" required>
+              <option value="">Selecciona un servicio</option>
+              <option value="obstetric">Ecografía Obstétrica</option>
+              <option value="gineco">Ecografía Ginecológica</option>
+              <option value="abdominal">Ecografía Abdominal</option>
+              <option value="renal">Ecografía Renal</option>
+              <option value="mamaria">Ecografía Mamaria</option>
+              <option value="transvaginal">Ecografía Transvaginal</option>
+              <option value="musculo">Ecografía Musculoesquelética</option>
+              <option value="tiroides">Ecografía de Tiroides</option>
+              <option value="testicular">Ecografía Testicular</option>
+              <option value="tejidos">Ecografía de Tejidos Blandos</option>
+              <option value="transfontanelar">Ecografía Transfontanelar</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="col form-group">
+              <label for="date">Fecha</label>
+              <input id="date" type="date" required>
+            </div>
+            <div class="col form-group">
+              <label for="slot">Hora</label>
+              <select id="slot" required>
+                <option value="">Elige una fecha</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="notes">Notas o comentarios</label>
+            <textarea id="notes" name="notes"></textarea>
+          </div>
+          <div id="messages" class="messages"></div>
+          <div class="form-footer">
+            <button class="btn btn-primary" type="submit">Reservar cita</button>
+            <button class="btn btn-light" id="clearBtn" type="button">Limpiar</button>
+            <div class="muted">Duración de la cita: <strong>30 min</strong></div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="container" id="gallery">
+      <h2 style="text-align:center;">Nuestras Instalaciones</h2>
+      <div class="gallery-grid">
+        <img src="WhatsApp Image 2025-09-24 at 5.04.11 PM.jpeg" alt="Consultorio de EcoCuba">
+        <img src="WhatsApp Image 2025-09-24 at 5.04.11 PM (2).jpeg" alt="Especialista">
+      </div>
+    </section>
+
+    <section class="container" id="contact">
+      <h2 style="text-align:center;">Contacto y Ubicación</h2>
+      <div style="display:flex; gap: 2rem; flex-wrap: wrap;">
+        <div style="flex:1; min-width:300px;">
+          <h4>¡Estamos para servirte!</h4>
+          <p class="muted">Si tienes alguna duda o necesitas más información, no dudes en contactarnos.</p>
+          <div class="contact-info">
+            <p><i class="fas fa-phone-alt"></i> Teléfono: +593 99 729 9506</p>
+            <p><i class="fas fa-envelope"></i> Email: ulises.villalong@gmail.com</p>
+            <p><i class="fas fa-map-marker-alt"></i> Dirección: Ave Las Tecas esq Francisco Montoya, en frente al hospital juan montalvan cornejo , ricaurte , los Rios , ecuador</p>
+          </div>
+        </div>
+        <div style="flex:1; min-width:300px;">
+          <div class="map-container">
+            <iframe src="https://www.google.com/maps?q=-1.5688467719555903,-79.46728305722719&z=18&output=embed" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a class="whatsapp-btn" href="https://wa.me/593997299506" target="_blank">
+    <i class="fab fa-whatsapp"></i> WhatsApp
+  </a>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> EcoCuba Centro de Ecografías. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // JS para funcionalidad del formulario y año actual
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const dateInput = document.getElementById('date');
+    const slotSelect = document.getElementById('slot');
+
+    // Deshabilitar fechas pasadas
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    dateInput.min = today.toISOString().split('T')[0];
+
+    // Simular disponibilidad de horas (ejemplo)
+    dateInput.addEventListener('change', () => {
+      slotSelect.innerHTML = '';
+      const selectedDate = new Date(dateInput.value);
+      const today = new Date();
+      
+      const isToday = selectedDate.toDateString() === today.toDateString();
+      const startHour = isToday ? Math.max(7, today.getHours() + 1) : 7;
+
+      for (let hour = startHour; hour <= 20; hour++) {
+        const option = document.createElement('option');
+        option.value = `${hour}:00`;
+        option.textContent = `${hour}:00`;
+        slotSelect.appendChild(option);
+      }
+      if (slotSelect.options.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No hay horas disponibles';
+        slotSelect.appendChild(option);
+      }
+    });
+
+    // Envío del formulario
+    const bookingForm = document.getElementById('bookingForm');
+    const messages = document.getElementById('messages');
+    
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      messages.textContent = '';
+      messages.className = 'messages';
+      
+      const name = bookingForm.name.value;
+      const phone = bookingForm.phone.value;
+      const service = bookingForm.service.options[bookingForm.service.selectedIndex].text;
+      const date = bookingForm.date.value;
+      const slot = bookingForm.slot.value;
+      
+      const whatsappText = `¡Hola EcoCuba!%0AQuisiera agendar una cita.%0A%0ANombre: ${name}%0AServicio: ${service}%0AFecha: ${date}%0AHora: ${slot}%0A%0AEspero su confirmación. ¡Gracias!`;
+      const whatsappURL = `https://wa.me/593997299506?text=${whatsappText}`;
+      
+      window.open(whatsappURL, '_blank');
+      
+      messages.textContent = '¡Tu solicitud de cita ha sido enviada! Serás redirigido a WhatsApp para confirmar.';
+      messages.classList.add('success');
+      
+      bookingForm.reset();
+      slotSelect.innerHTML = '<option value="">Elige fecha</option>';
+    });
+
+    // Botón de limpiar
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      bookingForm.reset();
+      messages.textContent = '';
+      messages.className = 'messages';
+      slotSelect.innerHTML = '<option value="">Elige fecha</option>';
+    });
+  </script>
+
+</body>
+</html>
