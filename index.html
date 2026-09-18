@@ -7,28 +7,40 @@
   <meta name="description" content="EcoCuba - Precisión que cuida de ti. Agendamiento de ecografías obstétricas, ginecológicas, abdominales, musculoesqueléticas y más.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    /* === GENERAL STYLES === */
+    /* === TOKENS === */
     :root {
-      --blue-dark: #0b3b61;
-      --blue: #1e90ff;
-      --turquoise: #2ec4b6;
-      --green: #2b8a6b;
-      --muted: #6b7280;
-      --card-bg: #ffffff;
-      --light-bg: #f8faff;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
-      line-height: 1.6;
+      --navy: #062a3d;
+      --video-navy: #031830; /* fondo exacto del video del hero: rgb(3,24,48) */
+      --ecg-color: #5cbfe3;  /* color del núcleo de la línea de electro del video */
+      --blue-dark: #0b4a63;
+      --blue: #0891b2;
+      --turquoise: #22d3ee;
+      --aqua: #67e8f9;
+      --green: #059669;
+      --muted: #9fc0cc;
+      --heading: #f2fbfd;
+      --text: #dceef3;
+      --card-bg: #0b3245;
+      --surface-2: #0a2c3d;
+      --light-bg: rgba(255, 255, 255, 0.07);
+      --line: rgba(103, 232, 249, 0.18);
+      --font-display: 'Figtree', 'Noto Sans', sans-serif;
+      --font-body: 'Noto Sans', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: var(--font-body);
+      line-height: 1.65;
       font-size: 16px;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      background: linear-gradient(180deg, #f0fbff 0, #eefdfa 50%, #f7fff8 100%);
-      color: #072032;
+      background: linear-gradient(180deg, var(--video-navy) 0%, #062a3d 55%, #052230 100%);
+      color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
     .container {
       max-width: 1200px;
@@ -36,180 +48,483 @@
       padding: 0 1.5rem;
     }
     h1, h2, h3, h4 {
-      color: var(--blue-dark);
+      color: var(--heading);
       margin-top: 0;
+      font-family: var(--font-display);
+      letter-spacing: -0.02em;
     }
-    section {
-      padding: 3rem 0;
+    main > section { padding: 4rem 0; }
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      margin-bottom: 0.4rem;
     }
+    .section-kicker {
+      display: block;
+      text-align: center;
+      color: var(--turquoise);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .section-lead {
+      text-align: center;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 1rem;
+    }
+
+    /* === SCROLL REVEALS (3D entrance) === */
+    .reveal {
+      opacity: 0;
+      transform: perspective(900px) translateY(36px) rotateX(8deg);
+      transition: opacity 0.7s cubic-bezier(.22,.9,.34,1), transform 0.7s cubic-bezier(.22,.9,.34,1);
+      transition-delay: var(--d, 0s);
+      will-change: opacity, transform;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: perspective(900px) translateY(0) rotateX(0deg);
+    }
+
     /* === HEADER === */
     .header {
-      background-color: var(--card-bg);
-      padding: 1rem 0;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background: rgba(6, 33, 47, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0.9rem 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
       position: sticky;
       top: 0;
       z-index: 1000;
+      transition: padding 0.35s ease, box-shadow 0.35s ease;
+    }
+    .header.scrolled {
+      padding: 0.45rem 0;
+      box-shadow: 0 6px 22px rgba(6, 42, 61, 0.12);
     }
     .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      gap: 1rem;
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.9rem;
     }
     .logo img {
-      width: 4rem;
-      height: 4rem;
+      width: 3.4rem;
+      height: 3.4rem;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(11, 59, 97, 0.1);
+      box-shadow: 0 4px 12px rgba(11, 74, 99, 0.15);
+      display: block;
+      transition: transform 0.4s ease;
     }
+    .brand:hover .logo img { transform: rotate(-4deg) scale(1.06); }
     .brand-text h1 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       margin: 0;
-      font-weight: 700;
+      font-weight: 800;
     }
     .brand-text .slogan {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--muted);
       margin: 0;
+      letter-spacing: 0.04em;
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
     }
     .nav-menu a {
-      color: var(--blue-dark);
+      color: var(--text);
       text-decoration: none;
       font-weight: 600;
-      margin-left: 1.5rem;
-      transition: color 0.3s ease;
+      font-size: 0.95rem;
+      position: relative;
+      padding: 0.2rem 0;
     }
-    .nav-menu a:hover {
-      color: var(--blue);
+    .nav-menu a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--turquoise), var(--blue));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
     }
-    .nav-toggle { display: none; } /* Ocultar en desktop */
-    /* === HERO SECTION === */
-    .hero {
-      background: var(--light-bg);
-      border-radius: 14px;
-      padding: 2rem;
-      display: flex;
-      gap: 2rem;
+    .nav-menu a:hover::after { transform: scaleX(1); }
+    .nav-menu a:hover { color: var(--aqua); }
+    .nav-menu .nav-cta {
+      background: linear-gradient(135deg, var(--turquoise), var(--blue));
+      color: #fff;
+      padding: 0.5rem 1.1rem;
+      border-radius: 50px;
+      box-shadow: 0 4px 14px rgba(34, 211, 238, 0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .nav-menu .nav-cta::after { display: none; }
+    .nav-menu .nav-cta:hover {
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(34, 211, 238, 0.45);
+    }
+    .nav-toggle {
+      display: none;
       align-items: center;
-      flex-wrap: wrap-reverse;
-      box-shadow: 0 8px 28px rgba(5, 20, 30, 0.08);
-      border-top: 8px solid var(--blue-dark);
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text);
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .nav-toggle:hover { background: var(--light-bg); }
+
+    /* === HERO: pantalla de ecógrafo === */
+    /* El fondo del hero es el MISMO azul marino del video (--video-navy) y el único
+       degradado (brillo a la izquierda) se apaga antes de llegar al borde del video,
+       así el video se funde con la web sin costuras. */
+    .hero {
+      position: relative;
+      margin-top: 1.5rem;
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      display: flex;
+      gap: 2.5rem;
+      align-items: flex-start;
+      overflow: hidden;
+      background:
+        radial-gradient(55% 80% at 0% 0%, rgba(11, 74, 99, 0.55) 0%, rgba(11, 74, 99, 0) 100%),
+        var(--video-navy);
+      border: 1px solid rgba(103, 232, 249, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 8, 16, 0.35);
+      isolation: isolate;
     }
     .hero-text {
-      flex: 1;
-      min-width: 300px;
+      flex: 1 1 0;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(103, 232, 249, 0.12);
+      border: 1px solid rgba(103, 232, 249, 0.35);
+      color: var(--aqua);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      margin-bottom: 1.2rem;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--aqua);
+      animation: blink 1.6s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(127,233,221,0.6); }
+      50% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(127,233,221,0); }
     }
     .hero-text h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+      font-size: clamp(1.9rem, 4vw, 2.75rem);
+      margin-bottom: 0.4rem;
+      text-wrap: balance;
+      color: #ffffff;
+      line-height: 1.15;
     }
+    .hero-text h2 .accent {
+      background: linear-gradient(90deg, var(--aqua), var(--turquoise));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-text p {
+      color: #b9d4e4;
+      max-width: 46ch;
+    }
+    /* --- Línea de electro de la web = misma forma, color, grosor y escala que la del video ---
+       El SVG usa el sistema de coordenadas del video (1 unidad = 1 px del video de 848×478),
+       su altura se escala con el ancho real del video (JS: --ecg-scale) y su extremo derecho
+       termina en el borde izquierdo del video, a la altura de la línea base del video. */
+    .ecg-line {
+      display: block;
+      width: calc(100% + 2.5rem);   /* cruza el gap del hero hasta tocar el video */
+      margin: 0.4rem -2.5rem 0.6rem 0;
+      height: calc(270px * var(--ecg-scale, 0.6));
+      overflow: hidden;
+      filter: drop-shadow(0 0 3px rgba(0, 170, 235, 0.75)) drop-shadow(0 0 9px rgba(0, 140, 220, 0.45));
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 28%);
+    }
+    .ecg-line path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .ecg-line .ecg-base {
+      stroke: var(--ecg-color);
+      stroke-width: 2.8;
+    }
+    /* destello que recorre la línea hacia el video (mitad de la duración del video: 9.27 s / 2) */
+    .ecg-line .ecg-pulse {
+      stroke: #d6f8ff;
+      stroke-width: 4;
+      stroke-dasharray: 70 930;
+      stroke-dashoffset: 70;
+      animation: ecgPulse 4.633s linear infinite;
+    }
+    @keyframes ecgPulse {
+      to { stroke-dashoffset: -930; }
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* --- Video del hero: sin controles, 100% responsivo, fondo idéntico al de la web --- */
     .hero-image {
-      flex: 1;
-      text-align: center;
-    }
-    .hero-image img {
+      flex: 0 0 48%;
       max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(6, 30, 45, 0.06);
+      position: relative;
+      z-index: 1;
     }
-    /* === SERVICES SECTION === */
+    .hero-frame {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      aspect-ratio: 848 / 478;          /* reserva el espacio: sin saltos de layout (CLS) */
+      background: var(--video-navy);
+    }
+    .hero-video {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      object-fit: cover;               /* rellena el marco sin deformar (usar contain para no recortar) */
+      object-position: center;
+      background: var(--video-navy);
+      pointer-events: none;            /* sin menú contextual/controles ni interacción */
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    /* Ocultar cualquier control nativo (Chrome/Safari/Edge/Firefox) */
+    .hero-video::-webkit-media-controls,
+    .hero-video::-webkit-media-controls-panel,
+    .hero-video::-webkit-media-controls-enclosure,
+    .hero-video::-webkit-media-controls-overlay-play-button,
+    .hero-video::-webkit-media-controls-start-playback-button,
+    .hero-video::-webkit-media-controls-timeline,
+    .hero-video::-webkit-media-controls-play-button {
+      display: none !important;
+      opacity: 0 !important;
+      -webkit-appearance: none;
+    }
+
+    /* === STATS STRIP === */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: -2.2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.1rem 1.4rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(6, 42, 61, 0.08);
+    }
+    .stat-card .num {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--aqua);
+      line-height: 1.2;
+    }
+    .stat-card .num span { color: var(--turquoise); }
+    .stat-card .label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* === SERVICES === */
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2.2rem;
+      perspective: 1200px;
     }
     .service-card {
       background: var(--card-bg);
-      border-radius: 10px;
-      padding: 1.5rem;
+      border-radius: 14px;
+      padding: 1.6rem 1.5rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--line);
       border-left: 5px solid var(--turquoise);
+      transform-style: preserve-3d;
+      transition: box-shadow 0.35s ease;
+      position: relative;
     }
     .service-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 22px 44px rgba(11, 74, 99, 0.16);
+      z-index: 2;
+    }
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--turquoise), var(--blue));
+      box-shadow: 0 6px 16px rgba(34, 211, 238, 0.35);
+      margin-bottom: 1rem;
+      transform: translateZ(30px);
     }
     .service-card h4 {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
+      font-size: 1.05rem;
+      transform: translateZ(20px);
     }
     .service-card p {
       color: var(--muted);
       font-size: 0.9rem;
+      margin: 0;
+      transform: translateZ(12px);
     }
-    /* === BOOKING SECTION === */
+
+    /* === BOOKING === */
+    .booking-section { background: transparent; }
     .booking {
-      background: var(--light-bg);
-      border-radius: 14px;
-      padding: 2rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      max-width: 700px;
-      margin: 2rem auto;
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 2.5rem 2.2rem;
+      box-shadow: 0 16px 40px rgba(6, 42, 61, 0.1);
+      border: 1px solid var(--line);
+      border-top: 6px solid var(--turquoise);
+      max-width: 720px;
+      margin: 2rem auto 0;
     }
     .booking h3 {
       text-align: center;
-      font-size: 1.75rem;
+      font-size: 1.7rem;
+      margin-bottom: 0.3rem;
     }
-    .form-group {
-      margin-bottom: 1rem;
+    .booking .booking-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin: 0 0 1.6rem;
     }
+    .form-group { margin-bottom: 1.1rem; }
     .form-group label {
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.45rem;
       font-weight: 600;
-      color: var(--blue-dark);
+      font-size: 0.9rem;
+      color: var(--aqua);
     }
     .form-group input,
     .form-group select,
     .form-group textarea {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #e6eef2;
-      border-radius: 8px;
+      padding: 0.8rem 0.9rem;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
       font-size: 1rem;
+      font-family: var(--font-body);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     }
-    .form-group textarea {
-      min-height: 100px;
-      resize: vertical;
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--muted); opacity: 0.8; }
+    .form-group select option { background: var(--card-bg); color: var(--text); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--turquoise);
+      box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.15);
+      transform: translateY(-1px);
     }
-    .form-row {
-      display: flex;
-      gap: 1rem;
-    }
-    .form-row .col {
-      flex: 1;
-    }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .form-row { display: flex; gap: 1rem; }
+    .form-row .col { flex: 1; }
     .btn {
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
+      padding: 0.8rem 1.6rem;
+      border-radius: 10px;
       font-weight: 700;
+      font-family: var(--font-body);
+      font-size: 0.98rem;
       cursor: pointer;
       border: none;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease;
     }
+    .btn:active { transform: scale(0.97); }
     .btn-primary {
-      background: var(--blue-dark);
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue));
       color: white;
+      box-shadow: 0 8px 20px rgba(11, 74, 99, 0.3);
     }
     .btn-primary:hover {
-      background: var(--blue);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(8, 145, 178, 0.4);
     }
     .btn-light {
       background: transparent;
-      color: var(--blue-dark);
-      border: 2px solid var(--blue-dark);
+      color: var(--aqua);
+      border: 2px solid var(--aqua);
     }
-    .btn-light:hover {
-      background: var(--blue-dark);
-      color: white;
+    .btn-light:hover { background: var(--aqua); color: var(--navy); }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(4px);
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    .btn-hero {
+      background: linear-gradient(135deg, var(--turquoise), var(--blue));
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(34, 211, 238, 0.4);
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-hero:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(34, 211, 238, 0.55);
     }
     .form-footer {
       display: flex;
@@ -217,100 +532,227 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 1rem;
-      margin-top: 1rem;
+      margin-top: 1.2rem;
     }
-    /* === GALLERY & CONTACT === */
+    .form-footer .muted { color: var(--muted); font-size: 0.88rem; }
+    .messages { min-height: 0; }
+    .messages.success {
+      background: rgba(5, 150, 105, 0.15);
+      border: 1px solid rgba(5, 150, 105, 0.4);
+      color: #6ee7b7;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
+      animation: popIn 0.4s cubic-bezier(.22,.9,.34,1);
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(8px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* === GALLERY === */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.4rem;
+      margin-top: 2rem;
+      perspective: 1200px;
     }
-    .gallery-grid img {
+    .gallery-item {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      box-shadow: 0 8px 24px rgba(6, 42, 61, 0.12);
+      transition: box-shadow 0.35s ease;
+    }
+    .gallery-item:hover { box-shadow: 0 24px 48px rgba(6, 42, 61, 0.22); }
+    .gallery-item img,
+    .gallery-item video {
       width: 100%;
-      height: 250px;
+      height: 280px;
       object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: block;
+      background: #000;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover img,
+    .gallery-item:hover video { transform: scale(1.06); }
+    .gallery-item figcaption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1.6rem 1.2rem 0.9rem;
+      background: linear-gradient(180deg, transparent, rgba(6, 42, 61, 0.85));
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* === CONTACT === */
+    .contact-wrap {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .contact-col { flex: 1; min-width: 300px; }
+    .contact-card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.8rem;
+      box-shadow: 0 8px 26px rgba(6, 42, 61, 0.07);
+      height: 100%;
     }
     .contact-info {
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      margin-top: 1.2rem;
     }
     .contact-info p {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      align-items: flex-start;
+      gap: 0.8rem;
       margin: 0;
       color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .contact-info i {
+      color: var(--turquoise);
+      font-size: 1rem;
+      margin-top: 0.25rem;
+      width: 20px;
+      text-align: center;
     }
     .map-container {
       width: 100%;
-      height: 300px;
-      border-radius: 10px;
+      height: 100%;
+      min-height: 320px;
+      border-radius: 16px;
       overflow: hidden;
-      border: 1px solid #e6eef2;
-      margin-top: 1rem;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 26px rgba(6, 42, 61, 0.07);
     }
     .map-container iframe {
       width: 100%;
       height: 100%;
+      min-height: 320px;
       border: 0;
+      display: block;
     }
-    /* === WHATSAPP BUTTON & FOOTER === */
+
+    /* === WHATSAPP & FOOTER === */
     .whatsapp-btn {
       position: fixed;
       right: 1.5rem;
       bottom: 1.5rem;
       background: linear-gradient(180deg, var(--turquoise), var(--green));
       color: white;
-      padding: 0.8rem 1.2rem;
+      padding: 0.85rem 1.3rem;
       border-radius: 50px;
       display: flex;
-      gap: 0.5rem;
+      gap: 0.55rem;
       align-items: center;
-      box-shadow: 0 8px 24px rgba(46, 196, 182, 0.28);
+      box-shadow: 0 8px 24px rgba(34, 211, 238, 0.35);
       text-decoration: none;
       font-weight: 700;
       z-index: 9999;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: heartbeat 2.4s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%, 40%, 100% { transform: scale(1); }
+      10% { transform: scale(1.06); }
+      20% { transform: scale(1); }
+      30% { transform: scale(1.06); }
     }
     .whatsapp-btn:hover {
-      transform: scale(1.05);
+      animation-play-state: paused;
+      transform: scale(1.08);
+      box-shadow: 0 12px 32px rgba(34, 211, 238, 0.5);
     }
     footer {
       text-align: center;
-      padding: 1rem 0;
-      border-top: 1px solid #eef6f6;
-      font-size: 0.8rem;
+      padding: 1.4rem 0;
+      border-top: 1px solid var(--line);
+      font-size: 0.82rem;
       color: var(--muted);
-      margin-top: 2rem;
+      margin-top: 2.5rem;
+      background: rgba(4, 20, 30, 0.6);
     }
-    /* === MOBILE STYLES === */
-    @media (max-width: 768px) {
-      .header-content {
+
+    /* === FOCUS VISIBLE === */
+    a:focus-visible, button:focus-visible, input:focus-visible,
+    select:focus-visible, textarea:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    /* === MOBILE === */
+    @media (max-width: 820px) {
+      .nav-toggle { display: flex; }
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--surface-2);
         flex-direction: column;
-        gap: 1rem;
+        gap: 0;
+        padding: 0.5rem 0 1rem;
+        box-shadow: 0 16px 30px rgba(6, 42, 61, 0.15);
+      }
+      .nav-menu.open { display: flex; }
+      .nav-menu a {
+        padding: 0.8rem 1.5rem;
+        width: 100%;
         text-align: center;
       }
-      .nav-menu {
-        display: none; /* Ocultar menú en móviles */
+      .nav-menu .nav-cta {
+        width: auto;
+        margin: 0.6rem auto 0;
       }
       .hero {
         flex-direction: column;
+        align-items: stretch;
         text-align: center;
+        padding: 1.4rem 1.2rem 2.2rem;
+        gap: 1rem;
+        background: var(--video-navy);   /* sin brillo: el video queda a ras con el fondo */
       }
-      .hero-image {
-        order: -1;
+      /* el video ocupa todo el ancho de la tarjeta y sube al inicio */
+      .hero-image { order: -1; flex: 0 0 auto; width: 100%; margin-top: 0 !important; }
+      .hero-text { margin-top: 0 !important; }
+      .hero-actions { justify-content: center; }
+      /* en móvil el video queda arriba: la línea sigue a la misma escala, con fundido en ambos extremos */
+      .ecg-line {
+        width: 100%;
+        margin: 0.4rem 0 1rem;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18%, #000 82%, transparent 100%);
+                mask-image: linear-gradient(90deg, transparent 0, #000 18%, #000 82%, transparent 100%);
       }
-      .form-row {
-        flex-direction: column;
+      .hero-text p { margin-left: auto; margin-right: auto; }
+      .stats-strip { margin-top: 1.2rem; }
+      .form-row { flex-direction: column; }
+      .form-footer { justify-content: center; text-align: center; }
+    }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
       }
-      .form-footer {
-        justify-content: center;
-        text-align: center;
-      }
+      .reveal { opacity: 1; transform: none; }
+      .ecg-line .ecg-pulse { display: none; }
     }
   </style>
 
@@ -323,10 +765,10 @@
 
     gtag('config', 'G-09SWLZ0F4G');
   </script>
-  </head>
+</head>
 <body>
 
-  <header class="header">
+  <header class="header" id="siteHeader">
     <div class="container header-content">
       <div class="brand">
         <div class="logo">
@@ -337,67 +779,119 @@
           <p class="slogan">Precisión que cuida de ti</p>
         </div>
       </div>
-      <nav class="nav-menu">
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="nav-menu" id="navMenu">
         <a href="#services">Servicios</a>
-        <a href="#booking">Agendar cita</a>
         <a href="#gallery">Galería</a>
         <a href="#contact">Contacto</a>
+        <a href="#booking" class="nav-cta">Agendar cita</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="container hero" id="home">
-      <div class="hero-text">
-        <h2>Servicio de Ecografías Profesionales</h2>
-        <p class="muted">En EcoCuba, combinamos tecnología avanzada con atención humana para brindarte resultados precisos y confiables. Nuestro equipo de especialistas está aquí para cuidar de ti y de los tuyos.</p>
+    <div class="container">
+      <section class="hero" id="home">
+        <div class="hero-text">
+          <span class="hero-badge"><span class="dot"></span> Diagnóstico por imagen</span>
+          <h2>Ecografías profesionales con <span class="accent">precisión que cuida de ti</span></h2>
+          <!-- Misma forma/escala que la línea de electro del video; termina en su borde izquierdo -->
+          <svg class="ecg-line" id="ecgLine" viewBox="0 0 2400 270" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
+            <path class="ecg-base" d="M0,154 L137,154 L151,127 L163,154 L175,154 L187,186 L213,14 L235,244 L251,154 L269,154 L295,123 L315,154 L368,154 L382,127 L394,154 L406,154 L418,186 L444,14 L466,244 L482,154 L500,154 L526,123 L546,154 L599,154 L613,127 L625,154 L637,154 L649,186 L675,14 L697,244 L713,154 L731,154 L757,123 L777,154 L830,154 L844,127 L856,154 L868,154 L880,186 L906,14 L928,244 L944,154 L962,154 L988,123 L1008,154 L1061,154 L1075,127 L1087,154 L1099,154 L1111,186 L1137,14 L1159,244 L1175,154 L1193,154 L1219,123 L1239,154 L1292,154 L1306,127 L1318,154 L1330,154 L1342,186 L1368,14 L1390,244 L1406,154 L1424,154 L1450,123 L1470,154 L1523,154 L1537,127 L1549,154 L1561,154 L1573,186 L1599,14 L1621,244 L1637,154 L1655,154 L1681,123 L1701,154 L1754,154 L1768,127 L1780,154 L1792,154 L1804,186 L1830,14 L1852,244 L1868,154 L1886,154 L1912,123 L1932,154 L1985,154 L1999,127 L2011,154 L2023,154 L2035,186 L2061,14 L2083,244 L2099,154 L2117,154 L2143,123 L2163,154 L2216,154 L2230,127 L2242,154 L2254,154 L2266,186 L2292,14 L2314,244 L2330,154 L2348,154 L2374,123 L2394,154 L2400,154" />
+            <path class="ecg-pulse" pathLength="1000" d="M0,154 L137,154 L151,127 L163,154 L175,154 L187,186 L213,14 L235,244 L251,154 L269,154 L295,123 L315,154 L368,154 L382,127 L394,154 L406,154 L418,186 L444,14 L466,244 L482,154 L500,154 L526,123 L546,154 L599,154 L613,127 L625,154 L637,154 L649,186 L675,14 L697,244 L713,154 L731,154 L757,123 L777,154 L830,154 L844,127 L856,154 L868,154 L880,186 L906,14 L928,244 L944,154 L962,154 L988,123 L1008,154 L1061,154 L1075,127 L1087,154 L1099,154 L1111,186 L1137,14 L1159,244 L1175,154 L1193,154 L1219,123 L1239,154 L1292,154 L1306,127 L1318,154 L1330,154 L1342,186 L1368,14 L1390,244 L1406,154 L1424,154 L1450,123 L1470,154 L1523,154 L1537,127 L1549,154 L1561,154 L1573,186 L1599,14 L1621,244 L1637,154 L1655,154 L1681,123 L1701,154 L1754,154 L1768,127 L1780,154 L1792,154 L1804,186 L1830,14 L1852,244 L1868,154 L1886,154 L1912,123 L1932,154 L1985,154 L1999,127 L2011,154 L2023,154 L2035,186 L2061,14 L2083,244 L2099,154 L2117,154 L2143,123 L2163,154 L2216,154 L2230,127 L2242,154 L2254,154 L2266,186 L2292,14 L2314,244 L2330,154 L2348,154 L2374,123 L2394,154 L2400,154" />
+          </svg>
+          <p>En EcoCuba combinamos tecnología avanzada con atención humana para brindarte resultados precisos y confiables. Nuestro equipo de especialistas está aquí para cuidar de ti y de los tuyos.</p>
+          <div class="hero-actions">
+            <a class="btn btn-hero" href="#booking">Agendar mi cita</a>
+            <a class="btn btn-ghost" href="#services">Ver servicios</a>
+          </div>
+        </div>
+        <div class="hero-image" id="heroImage">
+          <div class="hero-frame" id="heroFrame">
+            <video class="hero-video" id="heroVideo"
+                   src="video%20de%20pagina.mp4?v=2" poster="hero-video-poster.jpg"
+                   width="848" height="478"
+                   autoplay muted playsinline preload="auto"
+                   disablepictureinpicture disableremoteplayback
+                   controlslist="nodownload nofullscreen noremoteplayback"
+                   tabindex="-1"
+                   role="img" aria-label="Animación: un latido de electrocardiograma se transforma en un especialista realizando una ecografía a un paciente"></video>
+          </div>
+        </div>
+      </section>
+
+      <div class="stats-strip">
+        <div class="stat-card reveal" style="--d:0s">
+          <div class="num"><span data-count="11">0</span><span>+</span></div>
+          <div class="label">Tipos de estudios ecográficos</div>
+        </div>
+        <div class="stat-card reveal" style="--d:0.12s">
+          <div class="num"><span data-count="30">0</span> <span>min</span></div>
+          <div class="label">Duración de cada consulta</div>
+        </div>
+        <div class="stat-card reveal" style="--d:0.24s">
+          <div class="num">7:00 <span>– 20:00</span></div>
+          <div class="label">Horario extendido todos los días</div>
+        </div>
       </div>
-      <div class="hero-image">
-        <img src="WhatsApp Image 2025-09-24 at 5.04.11 PM (2).jpeg" alt="Especialista realizando una ecografía">
-      </div>
-    </section>
+    </div>
 
     <section class="container" id="services">
-      <h2 style="text-align:center;">Nuestros Servicios</h2>
+      <span class="section-kicker reveal">Estudios disponibles</span>
+      <h2 class="section-title reveal">Nuestros Servicios</h2>
+      <p class="section-lead reveal">Estudios ecográficos completos realizados por especialistas, con equipos de alta resolución.</p>
       <div class="services-grid">
-        <div class="service-card">
+        <div class="service-card reveal" data-tilt style="--d:0s">
+          <div class="service-icon"><i class="fas fa-baby"></i></div>
           <h4>Ecografía Obstétrica</h4>
           <p>Monitoreo completo del desarrollo fetal durante el embarazo.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal" data-tilt style="--d:0.07s">
+          <div class="service-icon"><i class="fas fa-venus"></i></div>
           <h4>Ecografía Ginecológica</h4>
           <p>Análisis de útero, ovarios y órganos pélvicos.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal" data-tilt style="--d:0.14s">
+          <div class="service-icon"><i class="fas fa-stethoscope"></i></div>
           <h4>Ecografía Abdominal</h4>
           <p>Evaluación de órganos internos como hígado, riñones y páncreas.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal" data-tilt style="--d:0.21s">
+          <div class="service-icon"><i class="fas fa-bone"></i></div>
           <h4>Ecografía Musculoesquelética</h4>
           <p>Diagnóstico de lesiones en músculos, tendones y articulaciones.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal" data-tilt style="--d:0s">
+          <div class="service-icon"><i class="fas fa-notes-medical"></i></div>
           <h4>Ecografía de Tiroides</h4>
           <p>Visualización de la glándula tiroides para detectar nódulos o quistes.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal" data-tilt style="--d:0.07s">
+          <div class="service-icon"><i class="fas fa-ribbon"></i></div>
           <h4>Ecografía Mamaria</h4>
           <p>Evaluación del tejido mamario y detección temprana de anomalías.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal" data-tilt style="--d:0.14s">
+          <div class="service-icon"><i class="fas fa-droplet"></i></div>
           <h4>Ecografía Renal</h4>
           <p>Valoración del estado de los riñones y la presencia de cálculos.</p>
         </div>
-        <div class="service-card">
+        <div class="service-card reveal" data-tilt style="--d:0.21s">
+          <div class="service-icon"><i class="fas fa-mars"></i></div>
           <h4>Ecografía Testicular</h4>
           <p>Determinación de tumores, quistes o varicocele.</p>
         </div>
       </div>
     </section>
 
-    <section class="container" id="booking">
-      <div class="booking">
-        <h3>Agenda tu Cita</h3>
+    <section class="container booking-section" id="booking">
+      <span class="section-kicker reveal">Reserva en línea</span>
+      <h2 class="section-title reveal">Agenda tu Cita</h2>
+      <div class="booking reveal">
+        <h3>Completa tus datos</h3>
+        <p class="booking-sub">Al enviar, se abrirá WhatsApp con tu solicitud lista para confirmar.</p>
         <form id="bookingForm" autocomplete="off">
           <div class="form-group">
             <label for="name">Nombre completo</label>
@@ -457,35 +951,61 @@
     </section>
 
     <section class="container" id="gallery">
-      <h2 style="text-align:center;">Nuestras Instalaciones</h2>
+      <span class="section-kicker reveal">Conócenos</span>
+      <h2 class="section-title reveal">Nuestras Instalaciones</h2>
       <div class="gallery-grid">
-        <img src="WhatsApp Image 2025-09-24 at 5.04.11 PM.jpeg" alt="Consultorio de EcoCuba">
-        <img src="WhatsApp Image 2025-09-24 at 5.04.11 PM (2).jpeg" alt="Especialista">
+        <figure class="gallery-item reveal" data-tilt style="--d:0s; margin:0;">
+          <img src="consultorio.jpeg" alt="Consultorio de EcoCuba">
+          <figcaption>Consultorio equipado para tu comodidad</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" data-tilt style="--d:0.08s; margin:0;">
+          <img src="WhatsApp Image 2025-09-24 at 5.04.11 PM (2).jpeg" alt="Especialista de EcoCuba">
+          <figcaption>Especialistas que cuidan cada detalle</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" data-tilt style="--d:0.16s; margin:0;">
+          <img src="frente.jfif" alt="Fachada del centro EcoCuba">
+          <figcaption>Nuestra fachada, fácil de encontrar</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" data-tilt style="--d:0.24s; margin:0;">
+          <img src="sala de estar.png" alt="Sala de espera de EcoCuba">
+          <figcaption>Sala de espera cómoda y tranquila</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" data-tilt style="--d:0.32s; margin:0;">
+          <img src="WhatsApp Image 2026-09-18 at 9.00.31 AM.jpeg" alt="Instalaciones de EcoCuba">
+          <figcaption>Más de nuestras instalaciones</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" style="--d:0.4s; margin:0;">
+          <video src="WhatsApp Video 2026-09-18 at 8.42.11 AM.mp4" controls preload="metadata" playsinline></video>
+          <figcaption>Recorrido en video por nuestras instalaciones</figcaption>
+        </figure>
       </div>
     </section>
 
     <section class="container" id="contact">
-      <h2 style="text-align:center;">Contacto y Ubicación</h2>
-      <div style="display:flex; gap: 2rem; flex-wrap: wrap;">
-        <div style="flex:1; min-width:300px;">
-          <h4>¡Estamos para servirte!</h4>
-          <p class="muted">Si tienes alguna duda o necesitas más información, no dudes en contactarnos.</p>
-          <div class="contact-info">
-            <p><i class="fas fa-phone-alt"></i> Teléfono: +593 96 400 4026</p>
-            <p><i class="fas fa-envelope"></i> Email: ulises.villalong@gmail.com</p>
-            <p><i class="fas fa-map-marker-alt"></i> Dirección: Ave Las Tecas esq Francisco Montoya, en frente al hospital juan montalvan cornejo , ricaurte , los Rios , ecuador</p>
+      <span class="section-kicker reveal">Encuéntranos</span>
+      <h2 class="section-title reveal">Contacto y Ubicación</h2>
+      <div class="contact-wrap">
+        <div class="contact-col reveal" style="--d:0s">
+          <div class="contact-card">
+            <h4>¡Estamos para servirte!</h4>
+            <p style="color:var(--muted); margin:0;">Si tienes alguna duda o necesitas más información, no dudes en contactarnos.</p>
+            <div class="contact-info">
+              <p><i class="fas fa-phone-alt"></i> Teléfono: +593 96 400 4026</p>
+              <p><i class="fas fa-envelope"></i> Email: ulises.villalong@gmail.com</p>
+              <p><i class="fas fa-map-marker-alt"></i> Dirección: Ave Las Tecas esq Francisco Montoya, en frente al hospital juan montalvan cornejo , ricaurte , los Rios , ecuador</p>
+            </div>
           </div>
         </div>
-        <div style="flex:1; min-width:300px;">
+        <div class="contact-col reveal" style="--d:0.12s">
           <div class="map-container">
-            <iframe src="https://www.google.com/maps?q=-1.5688467719555903,-79.46728305722719&z=18&output=embed" loading="lazy"></iframe>
+            <iframe src="https://www.google.com/maps?q=-1.5688467719555903,-79.46728305722719&z=18&output=embed" loading="lazy" title="Ubicación de EcoCuba en el mapa"></iframe>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <a class="whatsapp-btn" href="https://wa.me/593964004026" target="_blank">
+  <a class="whatsapp-btn" href="https://wa.me/593964004026" target="_blank" rel="noopener">
     <i class="fab fa-whatsapp"></i> WhatsApp
   </a>
 
@@ -496,9 +1016,192 @@
   </footer>
 
   <script>
-    // JS para funcionalidad del formulario y año actual
+    // === Utilidades ===
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // === Header compacto al hacer scroll ===
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // === Menú móvil ===
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    navToggle.addEventListener('click', () => {
+      const open = navMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
+      navToggle.innerHTML = open ? '<i class="fas fa-xmark"></i>' : '<i class="fas fa-bars"></i>';
+    });
+    navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    }));
+
+    // === Reveals al hacer scroll ===
+    const revealEls = document.querySelectorAll('.reveal');
+    if (reducedMotion || !('IntersectionObserver' in window)) {
+      revealEls.forEach(el => el.classList.add('visible'));
+    } else {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealEls.forEach(el => io.observe(el));
+    }
+
+    // === Contadores animados ===
+    function animateCount(el) {
+      const target = parseInt(el.dataset.count, 10);
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    const counters = document.querySelectorAll('[data-count]');
+    if (reducedMotion || !('IntersectionObserver' in window)) {
+      counters.forEach(el => el.textContent = el.dataset.count);
+    } else {
+      const cio = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCount(entry.target);
+            cio.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
+      counters.forEach(el => cio.observe(el));
+    }
+
+    // === Inclinación 3D que sigue el cursor ===
+    if (!reducedMotion && window.matchMedia('(hover: hover)').matches) {
+      document.querySelectorAll('[data-tilt]').forEach(card => {
+        let raf = null;
+        card.addEventListener('mousemove', e => {
+          if (raf) return;
+          raf = requestAnimationFrame(() => {
+            const r = card.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+            card.style.animation = 'none';
+            card.style.transform =
+              `perspective(900px) rotateX(${(-y * 8).toFixed(2)}deg) rotateY(${(x * 8).toFixed(2)}deg) translateZ(6px)`;
+            raf = null;
+          });
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+          card.style.animation = '';
+        });
+      });
+    }
+
+    // === Hero: video sin controles + línea de electro empalmada con la del video ===
+    const heroVideo = document.getElementById('heroVideo');
+    const heroFrame = document.getElementById('heroFrame');
+    const heroImage = document.getElementById('heroImage');
+    const heroSection = document.getElementById('home');
+    const heroText = heroSection.querySelector('.hero-text');
+    const ecgLine = document.getElementById('ecgLine');
+
+    // Medidas del video de 848×478: la línea base del ECG está en y≈270.5 (56.6 %).
+    // El SVG de la web usa el mismo sistema (270 de alto, línea base en y=154).
+    const VIDEO_W = 848, VIDEO_H = 478, VIDEO_BASE = 270.5;
+    const ECG_H = 270, ECG_BASE = 154;
+    const desktopMQ = window.matchMedia('(min-width: 821px)');
+
+    function alignHeroEcg() {
+      const s = heroFrame.getBoundingClientRect().width / VIDEO_W;   // escala real del video
+      if (!s) return;
+      heroSection.style.setProperty('--ecg-scale', s.toFixed(4));
+      heroImage.style.marginTop = '';
+      heroText.style.marginTop = '';
+      if (!desktopMQ.matches) return;   // en móvil el video va arriba: solo se iguala la escala
+
+      // Escritorio: la línea base de la web debe caer exactamente a la altura de la del video.
+      const heroTop = heroSection.getBoundingClientRect().top + heroSection.clientTop
+                    + parseFloat(getComputedStyle(heroSection).paddingTop);
+      const ecgBaseY = ecgLine.getBoundingClientRect().top - heroTop + ECG_BASE * s;
+      const videoBaseY = VIDEO_BASE * s;
+      const diff = ecgBaseY - videoBaseY;
+      if (diff >= 0) heroImage.style.marginTop = diff.toFixed(2) + 'px';   // baja el video
+      else heroText.style.marginTop = (-diff).toFixed(2) + 'px';           // o baja el texto
+    }
+    alignHeroEcg();
+    window.addEventListener('load', alignHeroEcg);
+    window.addEventListener('resize', alignHeroEcg);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(alignHeroEcg);
+    if ('ResizeObserver' in window) new ResizeObserver(alignHeroEcg).observe(heroFrame);
+    desktopMQ.addEventListener('change', alignHeroEcg);
+
+    // Autoplay + loop + muted, sin controles. Se detiene con prefers-reduced-motion y fuera de pantalla.
+    heroVideo.muted = true;
+    heroVideo.controls = false;
+    heroVideo.removeAttribute('controls');
+    if (reducedMotion) {
+      heroVideo.removeAttribute('autoplay');
+      heroVideo.pause();          // queda el poster (primer fotograma con la línea de electro)
+    } else if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) heroVideo.play().catch(() => {});
+          else heroVideo.pause();
+        });
+      }, { threshold: 0.15 }).observe(heroFrame);
+    } else {
+      heroVideo.play().catch(() => {});
+    }
+
+    // Bucle continuo por script: sin el atributo loop (con loop el evento 'ended' no se
+    // dispara). El video se reinicia HERO_LOOP_MARGIN segundos antes del final
+    // (duration - 0.2) para que nunca llegue a mostrarse el fotograma estático final;
+    // 'ended' queda como red de seguridad y también fuerza currentTime = 0 y play().
+    if (!reducedMotion) {
+      const HERO_LOOP_MARGIN = 0.2;
+      const restartHeroVideo = () => {
+        heroVideo.currentTime = 0;
+        heroVideo.play().catch(() => {});
+      };
+      const restartIfNearEnd = () => {
+        const d = heroVideo.duration;
+        if (d && isFinite(d) && !heroVideo.paused && !heroVideo.seeking &&
+            heroVideo.currentTime >= d - HERO_LOOP_MARGIN) restartHeroVideo();
+      };
+      // timeupdate solo se emite ~4 veces por segundo (cada ~250 ms), más que el margen de
+      // 0.2 s: por eso se comprueba además en cada fotograma pintado mientras se reproduce.
+      let loopRaf = 0;
+      const watchLoop = () => {
+        restartIfNearEnd();
+        loopRaf = requestAnimationFrame(watchLoop);
+      };
+      heroVideo.addEventListener('playing', () => {
+        cancelAnimationFrame(loopRaf);
+        loopRaf = requestAnimationFrame(watchLoop);
+      });
+      heroVideo.addEventListener('pause', () => cancelAnimationFrame(loopRaf));
+      heroVideo.addEventListener('timeupdate', restartIfNearEnd);   // respaldo si rAF se limita (pestaña en segundo plano)
+      heroVideo.loop = false;
+      heroVideo.addEventListener('ended', restartHeroVideo);
+      // Respaldo: pausado en el último fotograma sin que se haya disparado 'ended'
+      heroVideo.addEventListener('pause', () => {
+        const d = heroVideo.duration;
+        const r = heroVideo.getBoundingClientRect();
+        const visible = r.bottom > 0 && r.top < window.innerHeight;
+        if (!heroVideo.ended && visible && !document.hidden && d && heroVideo.currentTime >= d - 0.1) restartHeroVideo();
+      });
+    }
+
+    // === Formulario de reserva ===
     const dateInput = document.getElementById('date');
     const slotSelect = document.getElementById('slot');
 
@@ -507,13 +1210,13 @@
     today.setHours(0, 0, 0, 0);
     dateInput.min = today.toISOString().split('T')[0];
 
-    // Simular disponibilidad de horas (ejemplo)
+    // Simular disponibilidad de horas
     dateInput.addEventListener('change', () => {
       slotSelect.innerHTML = '';
       const selectedDate = new Date(dateInput.value);
-      const today = new Date();
-      const isToday = selectedDate.toDateString() === today.toDateString();
-      const startHour = isToday ? Math.max(7, today.getHours() + 1) : 7;
+      const now = new Date();
+      const isToday = selectedDate.toDateString() === now.toDateString();
+      const startHour = isToday ? Math.max(7, now.getHours() + 1) : 7;
 
       for (let hour = startHour; hour <= 20; hour++) {
         const option = document.createElement('option');
@@ -532,29 +1235,29 @@
     // Envío del formulario
     const bookingForm = document.getElementById('bookingForm');
     const messages = document.getElementById('messages');
-    
+
     bookingForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
       messages.textContent = '';
       messages.className = 'messages';
-      
+
       const name = bookingForm.name.value;
       const phone = bookingForm.phone.value;
       const service = bookingForm.service.options[bookingForm.service.selectedIndex].text;
       const date = bookingForm.date.value;
       const slot = bookingForm.slot.value;
-      
+
       const whatsappText = `¡Hola EcoCuba!%0AQuisiera agendar una cita.%0A%0ANombre: ${name}%0AServicio: ${service}%0AFecha: ${date}%0AHora: ${slot}%0A%0AEspero su confirmación. ¡Gracias!`;
       const whatsappURL = `https://wa.me/593964004026?text=${whatsappText}`;
-      
+
       window.open(whatsappURL, '_blank');
-      
+
       messages.textContent = '¡Tu solicitud de cita ha sido enviada! Serás redirigido a WhatsApp para confirmar.';
       messages.classList.add('success');
-      
+
       bookingForm.reset();
-      slotSelect.innerHTML = '<option value="">Elige fecha</option>';
+      slotSelect.innerHTML = '<option value="">Elige una fecha</option>';
     });
 
     // Botón de limpiar
@@ -562,7 +1265,7 @@
       bookingForm.reset();
       messages.textContent = '';
       messages.className = 'messages';
-      slotSelect.innerHTML = '<option value="">Elige fecha</_option>';
+      slotSelect.innerHTML = '<option value="">Elige una fecha</option>';
     });
   </script>
 
